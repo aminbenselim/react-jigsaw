@@ -2,3 +2,4 @@
 *.jpg
 
 node_modules
+.vscode
