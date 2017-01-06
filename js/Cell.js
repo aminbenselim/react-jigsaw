@@ -9,8 +9,8 @@ export default class Cell extends Component {
     }
     render(){
         let style;
-        (this.state.hover) ? style = {width:'25%', height:'25%',backgroundColor: 'red'}
-         : style = {width:'25%', height:'25%',backgroundColor: 'blue'};
+        (this.state.hover) ? style = {width:'25%', height:'25%',border: '1px solid green'}
+         : style = {width:'25%', height:'25%'};
         return (
             <div 
             className="cell" 
