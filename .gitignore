@@ -1,3 +1,4 @@
-.gif
+*.gif
+*.jpg
 
 node_modules
