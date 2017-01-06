@@ -3,8 +3,6 @@ import Cell from "./Cell";
 
 export default class Puzzle extends Component {
    renderCell(i) {
-  const x = i % 4;
-  const y = Math.floor(i / 4);
   return (
     <div key={i}
          style={{ width: '25%', height: '25%' }}>
