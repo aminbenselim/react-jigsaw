@@ -3,7 +3,7 @@
  export default class Piece extends Component{
      render(){
          return (
-            <img src={this.props.src}>{this.props.children}</img>
+            <img style={{border:'1px solid black',width:'200px',height:'200px'}} src={this.props.src}></img>
         );
      }
  }

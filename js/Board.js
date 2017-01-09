@@ -1,66 +1,94 @@
 import React, {Component} from "react";
-import Puzzle from "./Puzzle";
 import Piece from './Piece';
 
 export default class Board extends Component {
     constructor(props){
         super(props);
-        this.imgs = [];
-        this.splitImage();
+        //const imgs = this.splitImage();
+        //console.log(imgs);
+       // this.renderImage = this.renderImage.bind(this);
+       // this.splitImage = this.splitImage.bind(this);
+        this.state = {
+            imgs: []
+        };
     } 
-
-    generateRandomNumber() {
-        let n = Math.floor(Math.random()*800);
-        if(n< 200 || n > 600) return n +'px';
-        else return (n<400) ?  n-200 +'px' : n +200 + 'px'; 
-    }    
 
     renderImage(i,src) {
         const left = Math.floor(Math.random()*350) + 'px';
-        const top = this.generateRandomNumber();
+        const top = Math.floor(Math.random()*350) + 'px';
         const styles = {
-            position: 'aboslute',
+            position: 'absolute',
             top: top,
             left: left,
         };
         return (
-            <div key={i} style={styles}>
+            <div key={i} style={styles} >
                 <Piece src={src} />
             </div>
         );
      }
-     
+     componentDidMount() {
+          //const imgs = this.splitImage();
+          this.loadImages().then((images) => {
+            this.setState({imgs:images});
+            console.log(images);
+          });
+     }
+    
+    loadImages(){
+    return new Promise(function(resolve,reject){
+        const img = new Image();
+        let imgz = [];
+        img.crossOrigin = "";
+        img.src = 'http://i.imgur.com/3zvEK12.jpg';
+        img.onload = function() {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext('2d');
+        for(let j=0;j<2;j++){
+            canvas.width = 200;
+            canvas.height= 200;
+            const pieceX = Math.floor(img.width/2)*(j%2);
+            const pieceY = Math.floor(img.height/2)*Math.floor(j/2);      
+            ctx.drawImage(img,pieceX,pieceY,img.width/2,img.height/2,0,0,canvas.width,canvas.height);
+            let url = canvas.toDataURL();
+            imgz.push(url);
+        }
+        resolve(imgz);
+        };
+    });
+}
     splitImage() {
         const canvas = document.createElement("canvas");
-        const div = document.createElement("canvas");
         const ctx = canvas.getContext('2d');
         const img = new Image();
+        let imgz = [];
         img.crossOrigin = "";
         img.src = 'http://i.imgur.com/3zvEK12.jpg';
         img.onload = () => {
-            for(let j=0;j<16;j++){
-                canvas.width = 100;
-                canvas.height= 100;
-                const pieceX = Math.floor(img.width/4)*(j%4);
-                const pieceY = Math.floor(img.height/4)*Math.floor(j/4);      
-                ctx.drawImage(img,pieceX,pieceY,img.width/4,img.height/4,0,0,canvas.width,canvas.height);
+            for(let j=0;j<2;j++){
+                canvas.width = 200;
+                canvas.height= 200;
+                const pieceX = Math.floor(img.width/2)*(j%2);
+                const pieceY = Math.floor(img.height/2)*Math.floor(j/2);      
+                ctx.drawImage(img,pieceX,pieceY,img.width/2,img.height/2,0,0,canvas.width,canvas.height);
                 let url = canvas.toDataURL();
-                const img1 = new Image();
-                img1.crossOrigin = "";
-                img1.src = url;
-                div.appendChild(img1);
-                this.imgs.push(url);
+                imgz.push(url);
             }
         };
+        return imgz;
     }
 
-    render(){
-        var s = this.imgs.map(function(url, index){
-                return renderImage(index,url);
+    render(){  
+      
+        //setInterval(console.log(JSON.stringify(this.state.imgs.toString())),200);
+        var pieces = this.state.imgs.map((url,i)=>{
+                //console.log('okdn');
+                return this.renderImage(i,url);
             });
+        //console.log(pieces);   
         return (
-            <div style={{width:'400px',height:'800px', backgroundColor:'#ff9600',position:'relative',display:'flex',alignItems:'center'}}>
-            {s}
+            <div style={{width:'400px',height:'400px', backgroundColor:'#ff9600',position:'relative'}}>
+            {pieces}
             </div>
         );
     }
