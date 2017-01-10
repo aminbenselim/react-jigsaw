@@ -15,8 +15,16 @@ export default class Puzzle extends Component {
         for(let j=0; j<16;j++){
             Cells.push(this.renderCell(j));
         }
+        const styles = {
+            width:this.props.width,
+            height:'400px', 
+            backgroundColor:'#0f0f69',
+            display:'inline-flex',
+            flexWrap:'wrap',
+            'zIndex': 1
+        };
         return (
-            <div style={{width:'400px',height:'400px', backgroundColor:'#0f0f69',display:'flex',flexWrap:'wrap'}}>
+            <div style={styles}>
             {Cells}
             </div>
         );
