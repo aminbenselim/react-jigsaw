@@ -5,7 +5,7 @@ import Cell from "./Cell";
 export default class Puzzle extends Component {
   renderCell(i, xPos, yPos) {
     return (
-      <div key={i} style={{width: "25%", height: "25%"}}>
+      <div key={i} style={{width: `${100 / this.props.RC}%`, height: `100 / this.props.RC}%`}}>
         <Cell xPos={xPos} yPos={yPos} /></div>
     );
   }
@@ -13,17 +13,19 @@ export default class Puzzle extends Component {
   render() {
     const Cells = [];
 
-    for (let j = 0; j < 16; j++) {
-      const xPos = j % 4 * 100 + "px";
+    const i = +this.props.RC;
+    const side = Math.floor(this.props.size / i);
+    for (let j = 0; j < i*i; j++) {
+      const xPos = j % i * side + "px";
 
-      const yPos = Math.floor(j / 4) * 100 + 250 + "px";
+      const yPos = Math.floor(j / i) * side + "px";
 
       Cells.push(this.renderCell(j, xPos, yPos));
     }
 
     const styles = {
-      width: this.props.width,
-      height: "400px",
+      width: this.props.size,
+      height: this.props.size,
       backgroundColor: "#0f0f69",
       display: "inline-flex",
       flexWrap: "wrap",

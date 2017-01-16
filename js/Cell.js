@@ -1,11 +1,22 @@
 import React, {Component} from "react";
+//import update from 'immutability-helper';
+
 
 import {DropTarget} from "react-dnd";
 
 const cellTarget = {
-  drop(props) {
-    return {};
+  drop(props, monitor, component) {
+    const item = monitor.getItem();
+    const delta = monitor.getDifferenceFromInitialOffset();
+    console.log(delta);
+    console.log(item);
+    const left = Math.round(item.left + delta.x);
+    const top = Math.round(item.top + delta.y);
+console.log(left + '' + top);
+    return {left, top };
+   // component.dropPiece(item.id, left, top);
   }
+
 };
 
 function collect(connect, monitor) {
@@ -19,6 +30,10 @@ class Cell extends Component {
     this.state = {hover: false};
 
     this.toggleHover = this.toggleHover.bind(this);
+  }
+
+  dropImage(Piece, left, top){
+    
   }
 
   render() {

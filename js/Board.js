@@ -8,6 +8,8 @@ import Piece from "./Piece";
 
 import Puzzle from "./Puzzle";
 
+
+
 class Board extends Component {
   constructor(props) {
     super(props);
@@ -16,21 +18,19 @@ class Board extends Component {
   }
 
   renderImage(i, src) {
-    const left = Math.floor(Math.random() * 400) + "px";
+    const left = Math.floor(Math.random() * 400) ;
 
-    const top = Math.floor(Math.random() * 200) + "px";
-
-    const styles = {position: "absolute", top: top, left: left};
+    const top = Math.floor(Math.random() * 200) ;
 
     return (
-      <div key={i} style={styles}>
-        <Piece src={src} />
+      <div key={i}>
+        <Piece src={src} left={left} top={top}/>
       </div>
     );
   }
 
   componentDidMount() {
-    this.loadImages("http://i.imgur.com/nEHF4E2.png", 4).then(images => {
+    this.loadImages("http://i.imgur.com/cpcdL2P.jpg", 2).then(images => {
       this.setState({imgs: images});
     });
   }
@@ -49,22 +49,24 @@ class Board extends Component {
         const canvas = document.createElement("canvas");
 
         const ctx = canvas.getContext("2d");
+       
+        canvas.width = img.width / nb;
 
+        canvas.height = img.height / nb;
+
+//                 console.log(`e[${img.width},${img.height}]`);
         for (let j = 0; j < nb * nb; j++) {
-          canvas.width = img.width / nb;
-
-          canvas.height = 400 / nb;
-
           const pieceX = Math.floor(img.width / nb) * (j % nb);
 
           const pieceY = Math.floor(img.height / nb) * Math.floor(j / nb);
 
+  //        console.log(`element ${j}: x-> ${pieceX} y-> ${pieceY} width-> ${img.width/nb}`);
           ctx.drawImage(
             img,
             pieceX,
             pieceY,
             img.width / nb,
-            400 / nb,
+            img.height / nb,
             0,
             0,
             canvas.width,
@@ -99,7 +101,7 @@ class Board extends Component {
     return (
       <div style={styles}>
         {pieces}
-        <Puzzle width="800px" />
+        <Puzzle size="400px"  RC='2'/>
       </div>
     );
   }
